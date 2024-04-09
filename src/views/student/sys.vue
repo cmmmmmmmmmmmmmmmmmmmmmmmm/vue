@@ -51,6 +51,7 @@
               :preview-src-list="scope.row.attachment.map((item) => item.url)"
               :initial-index="0"
               fit="cover"
+              preview-teleported="true"
             />
           </template>
         </el-table-column>
