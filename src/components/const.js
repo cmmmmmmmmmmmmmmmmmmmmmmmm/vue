@@ -51,8 +51,8 @@ export const STUDENT_MENU = [
         path: '/scholar'
     },{
         name:'公示及申诉',
-        icon:'el-icon-s-flag',
+        icon:'EditPen',
         key:3,
-        path:'Edit'
+        path:'/appeal'
     }
 ]

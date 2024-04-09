@@ -6,13 +6,13 @@
         学生信息
       </div>
       <div class="base-info-item"><span> 学号：</span>{{ detail.id }}</div>
-      <div class="base-info-item">
+      <!-- <div class="base-info-item">
         <span> 申报分数：</span>{{ detail.score }}
-      </div>
+      </div> -->
       <div class="base-info-item">
         <span> 学生姓名：</span>{{ detail.name }}
       </div>
-      
+
       <div class="base-info-item">
         <span> 创建时间：</span>{{ detail.creatTime }}
       </div>
@@ -39,7 +39,6 @@
             v-for="item in auditDetail.attachment"
             :key="item"
           >
-            <div class="desc">{{ item.description }}( {{ item.score }}分 )</div>
             <el-image
               style="width: 100px; height: 100px"
               :src="item.url"
@@ -50,6 +49,7 @@
               :initial-index="0"
               fit="cover"
             />
+            <div class="desc">{{ item.name }}</div>
             <!-- <img :src="item.url" /> -->
           </div>
         </div>
@@ -67,26 +67,15 @@
         label-width="auto"
         style="max-width: 600px"
         ref="ruleForm"
+        :rules="rules"
       >
-        <el-form-item
-          label="审批结果"
-          :rules="{
-            required: true,
-            message: '请选择审批结果',
-          }"
-        >
-          <el-radio-group v-model="formData.result">
+        <el-form-item label="审批结果" prop="result">
+          <el-radio-group v-model="formData.result" @change="onRadioChange">
             <el-radio value="agree">同意</el-radio>
             <el-radio value="reject">驳回</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item
-          label="审批意见"
-          :rule="{
-            required: this.formData.result == 'reject',
-            message: '请输入审批意见',
-          }"
-        >
+        <el-form-item label="审批意见" prop="desc">
           <el-input v-model="formData.desc" type="textarea" />
         </el-form-item>
         <el-form-item>
@@ -133,7 +122,7 @@ export default {
         result: [
           { required: true, message: '请选择审批结果', trigger: 'change' },
         ],
-        desc: [{ required: true, message: '请输入审批意见', trigger: 'blur' }],
+        desc: [{ required: false, message: '请输入审批意见' }],
       },
     }
   },
@@ -147,6 +136,11 @@ export default {
   computed: {},
   //方法表示一个具体的操作，主要书写业务逻辑；
   methods: {
+    onRadioChange(value) {
+      this.formData.result = value
+      let required = value === 'reject'
+      this.rules.desc = [{ required, message: '请输入审批意见' }]
+    },
     getDetail() {
       //这里暂时用axios模仿联网请求，到时候把import取消掉
       axios.get('/js/data.json').then(
@@ -168,11 +162,6 @@ export default {
         if (valid) {
           this.$message.success('发布公示成功')
           this.$router.go(-1)
-          // if (this.auditIndex == this.auditList.length - 1) {
-          //   this.$router.go(-1)
-          // } else {
-          // this.setAuditDetail(this.auditIndex + 1)
-          // }
         } else {
           return false
         }
@@ -193,9 +182,16 @@ export default {
       this.setAuditDetail(this.auditIndex - 1)
     },
     onNext() {
-      this.auditList[this.auditIndex].result = this.formData.result
-      this.auditList[this.auditIndex].desc = this.formData.desc
-      this.setAuditDetail(this.auditIndex + 1)
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.auditList[this.auditIndex].result = this.formData.result
+          this.auditList[this.auditIndex].desc = this.formData.desc
+          this.setAuditDetail(this.auditIndex + 1)
+        } else {
+          this.$message.warning('驳回请填写审批意见')
+          return false
+        }
+      })
     },
     onCancel() {
       this.$router.go(-1)
@@ -252,35 +248,21 @@ export default {
     }
     .base-info-item-attachment {
       width: 100%;
-      .attachment-list {
-        display: flex;
-        flex-wrap: wrap;
-        border: var(--el-border-color) 1px solid;
-        border-radius: 8px;
-        padding: 16px;
-        margin-top: 8px;
-      }
+      display: flex;
+
       .attachment {
-        border-right: solid 1px var(--el-border-color);
-        width: 25%;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
-        margin: 8px 0;
-
         .desc {
-          margin-bottom: 8px;
+          margin-top: 8px;
           font-size: 14px;
-          max-width: 80%;
+          word-break: break-all;
         }
         img {
           width: 200px;
           height: 200px;
         }
-      }
-      .attachment:last-child {
-        border-right: none;
       }
     }
   }

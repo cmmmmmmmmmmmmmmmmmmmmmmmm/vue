@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="reward">
     <el-card style="margin-bottom: 15px">
       <el-form :inline="true">
         <el-form-item label="学号">
@@ -27,7 +27,7 @@
       <el-table border :data="list">
         <el-table-column label="学号（ID）" prop="id"></el-table-column>
         <el-table-column label="学生姓名" prop="name"></el-table-column>
-        <el-table-column label="奖学金类型" prop="reward" >
+        <el-table-column label="奖学金类型" prop="reward">
           <template #default="scope">
             <div>
               {{
@@ -40,7 +40,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="奖学金金额 (元)" prop="sum" ></el-table-column>
+        <el-table-column label="奖学金金额 (元)" prop="sum"></el-table-column>
         <el-table-column
           sortable
           label="综测分数"
@@ -234,9 +234,11 @@ export default {
 }
 </script>
 
-<style>
-.el-input__wrapper,
-.el-select__wrapper {
-  width: 200px;
+<style lang="scss">
+.reward {
+  .el-input__wrapper,
+  .el-select__wrapper {
+    width: 200px;
+  }
 }
 </style>

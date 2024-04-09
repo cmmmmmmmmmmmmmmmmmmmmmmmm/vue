@@ -127,7 +127,8 @@ export default {
         userType: this.userType,
       })
       //跳转页面
-      this.$router.push('/patientMessage')
+      let homeUrl=this.userType === 'student'? '/sys':'/home'
+      this.$router.push(homeUrl)
     },
     goRegister() {
       console.log('register1', this.$route.query.type, this.loginType);
