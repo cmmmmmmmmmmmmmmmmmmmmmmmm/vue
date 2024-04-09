@@ -1,6 +1,7 @@
+
 <template>
   <div class="out_color">
-    <div class="title">脑机运营后台</div>
+    <div class="title">综测与奖学金材料<br/>审核系统</div>
 
     <el-aside width="200px">
       <el-menu
@@ -11,31 +12,26 @@
         :default-active="currentPath"
         :unique-opened="false"
       >
-        <el-submenu index="1">
-          <template #title><i class="el-icon-message"></i>患者</template>
-          <el-menu-item index="/patientMessage">患者信息</el-menu-item>
-          <el-menu-item index="/patientManager">患者管理</el-menu-item>
-        </el-submenu>
+        <el-menu-item v-for="item in menuList" :key="item.key" :index="item.path">
+          <template #title>
+            <i :class="item.icon"></i>
+            {{ item.name }}
+          </template>
 
-        <el-submenu index="2">
-          <template #title><i class="el-icon-menu"></i>康复</template>
-          <el-menu-item index="/recoverPlan">康复方案</el-menu-item>
-          <el-menu-item index="/recoverRecord">康复记录</el-menu-item>
-        </el-submenu>
-
-        <el-menu-item index="/setting">
-          <template #title><i class="el-icon-setting"></i>设置</template>
         </el-menu-item>
+
       </el-menu>
     </el-aside>
   </div>
 </template>
 
 <script>
+import { ADMIN_MENU, STUDENT_MENU } from './const'
 export default {
   data() {
     return {
       currentPath: '/patientMessage',
+      menuList:[]
     }
   },
   //部件
@@ -61,9 +57,17 @@ export default {
         this.currentPath = v
       }
     },
+
+    // 获取菜单数据
+    getMenuList() {
+      let userType=this.$store.state.userInfo.userType
+      this.menuList=userType==='student'?STUDENT_MENU:ADMIN_MENU
+    }
   },
   //请求数据
-  created() {},
+  created() {
+    this.getMenuList()
+  },
   mounted() {
     this.getCurrnetPath(this.$route.path)
   },
@@ -78,9 +82,9 @@ export default {
 
   .title {
     text-align: center;
-    font-size: 24px;
+    font-size: 20px;
     color: #fff;
-    margin: 23px 0 43px;
+    margin: 23px 16px;
   }
 }
 </style>

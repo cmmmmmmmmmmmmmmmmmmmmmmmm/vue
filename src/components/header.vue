@@ -3,7 +3,7 @@
     <el-header>
       <el-dropdown @command="handleCommand">
         <span class="username"
-          >李航
+          >{{this.$store.state.userInfo.username }}
           <i
             class="el-icon-caret-bottom usericon"
             style="margin-right: 15px"

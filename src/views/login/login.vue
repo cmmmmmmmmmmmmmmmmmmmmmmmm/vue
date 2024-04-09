@@ -11,7 +11,15 @@
             <span class="text">欢迎使用</span>
             <img src="../../assets/login-right-line.png" alt="" />
           </div>
-          <div class="r-title">脑机运营后台</div>
+          <div class="r-title">基于ocr识别的一站式综测与奖学金材料审核系统</div>
+          <el-tabs
+            v-model="userType"
+            class="demo-tabs"
+            @tab-click="changeUserType"
+          >
+            <el-tab-pane label="学员登录" name="student"></el-tab-pane>
+            <el-tab-pane label="管理员登录" name="admin"></el-tab-pane>
+          </el-tabs>
           <el-form :model="formData" :rules="rules" ref="ruleForm">
             <el-form-item label="账号" prop="username">
               <el-input
@@ -41,6 +49,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      userType: 'student',
       formData: {
         username: '',
         password: '',
@@ -69,6 +78,10 @@ export default {
     }
   },
   methods: {
+   changeUserType(tab) {
+    console.log('tab',tab.props.name);
+     this.userType = tab.props.name
+   },
     login() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
@@ -79,15 +92,16 @@ export default {
       })
     },
     async submit() {
-      // 这里是真实联网登录。存储用户信息及token
-      // let data = JSON.parse(JSON.stringify(this.formData))
-      // data.password = btoa(encodeURIComponent(data.password))
-      // data.showLoading = true
-      // var res = await this.$Http.login(data)
-      // // //存储登录token
-      // localStorage.setItem('COBRAIN_ADMIN_TK', `bmu ${res.data.token}`)
-      // // //存储用户信息
-      // this.$store.commit('SET_USER', res.data)
+      //存储用户信息
+      let userInfo = {
+        username: this.formData.username,
+        userType: this.userType,
+      }
+      localStorage.setItem('USER_INFO', JSON.stringify(userInfo))
+      this.$store.commit('SET_USER', {
+        username: this.formData.username,
+        userType: this.userType,
+      })
       //跳转页面
       this.$router.push('/patientMessage')
     },
@@ -148,9 +162,9 @@ export default {
           }
         }
         .r-title {
-          font-size: 34px;
+          font-size: 28px;
           color: #fff;
-          margin-bottom: 7.7vh;
+          margin-bottom: 5vh;
         }
         .btn-wrap {
           width: 100%;
@@ -169,6 +183,37 @@ export default {
 </style>
 <style lang="scss">
 .login {
+  .el-tabs {
+    margin-bottom: 12px;
+  }
+  .el-tabs__active-bar {
+    height: 3px;
+    background-color: #fff;
+  }
+  .el-tabs__nav-wrap::after {
+    height: 3px;
+    background: linear-gradient(90deg, #619afe 0%, #186cff 100%);
+  }
+  .el-tabs__nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    // margin-bottom: 8px;
+  }
+  .el-tabs__item {
+    
+    font-size: 20px;
+    color: #ddd;
+    width: 50%;
+  }
+  .el-tabs__item:hover{
+    color: #fff;
+  }
+  .el-tabs__item.is-active {
+    color: #fff;
+    font-size: 22px;
+    font-weight: bolder;
+  }
   .el-form-item__label {
     font-size: 20px;
   }
