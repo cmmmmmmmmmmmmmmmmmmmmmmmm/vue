@@ -28,6 +28,8 @@
     <el-card>
       <el-table border :data="list">
         <el-table-column label="学号（ID）" prop="id"></el-table-column>
+        <el-table-column label="班级" prop="class"></el-table-column>
+
         <el-table-column label="学生姓名" prop="name"></el-table-column>
         <el-table-column label="申报分数" sortable prop="score"></el-table-column>
         <el-table-column label="创建时间"  sortable prop="creatTime"></el-table-column>

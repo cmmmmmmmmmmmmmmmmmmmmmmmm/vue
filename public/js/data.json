@@ -6,41 +6,47 @@
       {
         "name": "王小虎",
         "score": 98,
-		"rank": 3,
+        "class": "数学一班",
+        "rank": 3,
         "creatTime": "2021-06-24 14:55:42",
         "id": 87,
         "sport": 82
       },
       {
         "score": 97,
-		"rank": 4,
+        "class": "数学二班",
+
+        "rank": 4,
         "creatTime": "2021-06-24 14:03:59",
         "id": 86,
         "name": "李歌如",
         "sport": 81
       },
       {
-		"rank": 10,
+        "rank": 10,
         "score": 73,
+        "class": "计科二班",
+
         "creatTime": "2021-06-24 14:00:35",
         "sport": 82,
         "id": 85,
         "name": "黄龙"
       },
       {
-		"rank":8,
+        "rank": 8,
         "score": 79,
         "creatTime": "2021-06-24 13:42:20",
+        "class": "计科二班",
 
         "id": 80,
         "name": "邹奇",
         "sport": 86
       },
       {
-        
-		"rank": 6,
+        "rank": 6,
         "score": 89,
         "creatTime": "2021-06-24 13:36:27",
+        "class": "金融二班",
 
         "id": 82,
         "name": "王俊",
@@ -48,10 +54,10 @@
         "sport": 88
       },
       {
-        
-		"rank": 9,
+        "rank": 9,
         "score": 82,
         "creatTime": "2021-06-24 11:59:32",
+        "class": "金融一班",
 
         "id": 84,
         "name": "李昌",
@@ -59,52 +65,54 @@
       },
       {
         "reward": "country",
-		"sum":8000,
+        "sum": 8000,
         "channel": "A",
         "score": 113,
         "creatTime": "2021-06-24 11:56:45",
-		"rank": 2,
+        "rank": 2,
         "id": 83,
         "name": "李民",
+        "class": "金融一班",
         "sport": 85
       },
       {
-        
         "rank": 1,
         "score": 125,
         "creatTime": "2021-06-24 11:37:03",
+        "class": "电信一班",
 
         "id": 81,
         "name": "裴杨威",
         "sport": 92
       },
       {
-        
         "score": 68,
-		"rank": 11,
+        "rank": 11,
         "creatTime": "2021-06-24 10:26:07",
+        "class": "电信二班",
 
         "id": 79,
         "name": "江棚",
         "sport": 90
       },
       {
-        
-		"rank": 7,
+        "rank": 7,
         "score": 86,
         "creatTime": "2021-06-24 10:21:30",
+        "class": "计科二班",
 
         "id": 78,
         "name": "江场",
         "sport": 87
       },
       {
-        
         "score": 90,
-		"rank": 5,
+        "rank": 5,
         "creatTime": "2021-06-24 14:55:42",
         "id": 77,
         "name": "成华",
+        "class": "计科一班",
+
         "sport": 89
       }
     ],
