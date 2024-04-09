@@ -1,9 +1,10 @@
 import Home from '../views/admin/home.vue'
 import Rule from '../views/admin/rule.vue'
 import Upload from '../views/admin/upload.vue'
-import Review from '../views/admin/review.vue'
 import Dispose from '../views/admin/dispose.vue'
 import Reward from '../views/admin/reward.vue'
+import Review from '../views/admin/review/review.vue'
+import ReviewDetail from '../views/admin/review/reviewDetail.vue'
 
 export default [
     {
@@ -25,7 +26,7 @@ export default [
         meta: {
             name: '综测及奖学金相关规则发布',
             parentPath: [
-                { parentUrl: '', parentName: '规则发布' },
+                { parentUrl: '/home', parentName: '首页' },
             ],
             index: 0
         }
@@ -37,7 +38,7 @@ export default [
         meta: {
             name: '学生成绩上传',
             parentPath: [
-                { parentUrl: '', parentName: '成绩上传' },
+                { parentUrl: '/home', parentName: '首页' },
             ],
             index: 0
         }
@@ -47,9 +48,22 @@ export default [
         name: 'Review',
         component: Review,
         meta: {
-            name: '综测材料审核及发布公示',
+            name: '综测材料审核',
             parentPath: [
-                { parentUrl: '', parentName: '综测材料审核' },
+                { parentUrl: '/home', parentName: '首页' },
+            ],
+            index: 0
+        }
+    },
+    {
+        path: '/reviewDetail',
+        name: 'ReviewDetail',
+        component: ReviewDetail,
+        meta: {
+            name: '综测材料审核详情',
+            parentPath: [
+                { parentUrl: '/home', parentName: '首页' },
+                { parentUrl: '/review', parentName: '综测材料审核' },
             ],
             index: 0
         }
@@ -61,7 +75,7 @@ export default [
         meta: {
             name: '奖学金评定及发布公示',
             parentPath: [
-                { parentUrl: '', parentName: '奖学金评定' },
+                { parentUrl: '/home', parentName: '首页' },
             ],
             index: 0
         }
@@ -74,7 +88,7 @@ export default [
         meta: {
             name: '申诉处理',
             parentPath: [
-                { parentUrl: '', parentName: '申诉处理' },
+                { parentUrl: '/home', parentName: '首页' },
             ],
             index: 0
         }

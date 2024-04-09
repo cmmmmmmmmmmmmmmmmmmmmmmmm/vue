@@ -2,8 +2,16 @@
   <div class="header">
     <el-header>
       <el-dropdown @command="handleCommand">
-        <span class="username"
-          >{{this.$store.state.userInfo.username }}
+       
+        <span class="username">
+          <span class="user-type">
+          {{
+            this.$store.state.userInfo.userType === 'student'
+              ? '学生'
+              : '管理员'
+          }} / &nbsp;
+        </span>
+          {{ this.$store.state.userInfo.username }}
           <i
             class="el-icon-caret-bottom usericon"
             style="margin-right: 15px"
@@ -53,10 +61,16 @@ export default {
   line-height: 60px;
   background: white;
   z-index: 99;
+  .user-type {
+    color: #555;
+    font-size: 14px;
+  }
   .username {
     font-size: 18px;
     color: #333;
     cursor: pointer;
+    display: flex;
+    align-items: center;
   }
 }
 </style>

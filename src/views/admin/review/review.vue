@@ -16,6 +16,7 @@
             v-model="searchForm.name"
           ></el-input>
         </el-form-item>
+      
 
         <el-form-item class="fr">
           <el-button type="primary" @click="search">搜索</el-button>
@@ -27,41 +28,13 @@
       <el-table border :data="list">
         <el-table-column label="学号（ID）" prop="id"></el-table-column>
         <el-table-column label="学生姓名" prop="name"></el-table-column>
-        <el-table-column label="奖学金类型" prop="reward" >
-          <template #default="scope">
-            <div>
-              {{
-                scope.row.reward
-                  ? scholarOption.filter(
-                      (option) => option.value == scope.row.reward
-                    )?.[0]?.label
-                  : '-'
-              }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="奖学金金额 (元)" prop="sum" ></el-table-column>
-        <el-table-column
-          sortable
-          label="综测分数"
-          prop="score"
-        ></el-table-column>
-        <el-table-column
-          sortable
-          label="综测排名"
-          prop="rank"
-        ></el-table-column>
-        <el-table-column
-          sortable
-          label="体育成绩"
-          prop="sport"
-        ></el-table-column>
+        <el-table-column label="申报分数" sortable prop="score"></el-table-column>
+        <el-table-column label="创建时间"  sortable prop="creatTime"></el-table-column>
+      
 
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button type="text" @click="openDialog(scope.row)"
-              >奖学金评定</el-button
-            >
+            <el-button type="text" @click="goDetail(scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,53 +45,6 @@
       ></Pagination>
     </el-card>
   </div>
-
-  <el-dialog
-    v-model="dialogVisible"
-    title="奖学金评定"
-    width="500"
-    draggable
-    overflow
-  >
-    <el-form
-      :inline="true"
-      :model="formData"
-      class="demo-form-inline"
-      style="padding-left: 32px"
-    >
-      <el-form-item label="奖学金类型">
-        <el-select
-          v-model="formData.reward"
-          placeholder="请选择奖学金类型"
-          clearable
-          @change="onTypeChange"
-        >
-          <el-option
-            v-for="item in scholarOption"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="奖学金金额">
-        <el-input
-          v-model="formData.sum"
-          placeholder="请输入奖学金金额"
-          clearable
-        >
-          <template #append>元</template></el-input
-        >
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button type="primary" @click="onsubmitReward"> 确定 </el-button>
-        <el-button @click="dialogOverflowVisible = false">取消</el-button>
-      </div>
-    </template>
-  </el-dialog>
 </template>
 
 <script>
@@ -130,20 +56,14 @@ export default {
   components: { Pagination },
   data() {
     return {
-      dialogVisible: false,
       searchForm: {
         type: 0,
         name: '',
       },
-      formData: {
-        reward: undefined,
-        sum: '',
-        id: '',
-      },
-      scholarOption: [
-        { label: '国家奖学金', value: 'country', sum: 8000 },
-        { label: '省级奖学金', value: 'province', sum: 5000 },
-        { label: '校级奖学金', value: 'school', sum: 2000 },
+      auditStatusOption: [
+        { label: '全部', value: 0 },
+        { label: '组织机构', value: 1 },
+        { label: '个人', value: 2 },
       ],
       pagiParams: {
         pageNumber: 1,
@@ -161,29 +81,12 @@ export default {
   computed: {},
   //方法表示一个具体的操作，主要书写业务逻辑；
   methods: {
-    openDialog(row) {
-      let { reward, sum, id } = row
-      this.dialogVisible = true
-      this.formData = { reward, sum, id }
-    },
-    onsubmitReward() {
-      this.dialogVisible = false
-      this.list.forEach((item) => {
-        if (item.id == this.formData.id) {
-          item.reward = this.formData.reward
-          item.sum = this.formData.sum
-        }
-      })
-      this.formData = {}
-      this.$message.success('奖学金评定成功')
-    },
-    onTypeChange(item) {
-      this.formData.reward = item
-      this.formData.sum = this.scholarOption.filter(
-        (option) => option.value == item
-      )[0].sum
-    },
+    // goPatientEditor() {
+    //   this.$router.push('/patientMessageEditor')
+    // },
     search() {
+      // this.pagiParams.pageNumber = 1
+      // this.getList()
       this.$message.warning('此功能暂未开发')
     },
     getListBySizePage(pageNumber, pageSize) {
@@ -196,6 +99,7 @@ export default {
       if (this.searchForm.type == 0) {
         delete data.type
       }
+
       data.pageNumber = this.pagiParams.pageNumber
       data.pageSize = this.pagiParams.pageSize
 
@@ -214,9 +118,9 @@ export default {
         }
       )
     },
-    goDetail({ id }) {
+    goDetail({id}) {
       // console.log(detail, 'detail');
-      this.$router.push({ path: '/reviewDetail', query: { id } })
+      this.$router.push({ path: '/reviewDetail',query: {id} })
     },
     reset() {
       this.searchForm = JSON.parse(this._searchForm)
@@ -234,9 +138,4 @@ export default {
 }
 </script>
 
-<style>
-.el-input__wrapper,
-.el-select__wrapper {
-  width: 200px;
-}
-</style>
+<style scoped></style>

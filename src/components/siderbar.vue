@@ -1,20 +1,24 @@
 
 <template>
   <div class="out_color">
+   <div class="logo_box">
+    <img src="@/assets/logo.png" class="logo"/>
+   </div>
     <div class="title">综测与奖学金材料<br/>审核系统</div>
-
     <el-aside width="200px">
       <el-menu
         style="border: none"
-        background-color="#545c64"
-        text-color="#fff"
+       
         :router="true"
         :default-active="currentPath"
         :unique-opened="false"
       >
+     
         <el-menu-item v-for="item in menuList" :key="item.key" :index="item.path">
           <template #title>
-            <i :class="item.icon"></i>
+            <el-icon>
+                    <component :is="item.icon"/>
+                  </el-icon>
             {{ item.name }}
           </template>
 
@@ -75,16 +79,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logo_box{
+  display: flex;
+  justify-content: center;
+}
+.logo{
+  width: 100px;
+  height: 100px;
+}
 .out_color {
-  background-color: #545c64;
+  background-color: #fff;
   width: 200px;
   height: 100vh;
+  :deep{
+    .el-menu-item{
+      padding: 0;
+      padding-left: 0!important;
+      margin: 8px 32px;
+      justify-content: center;
+    }
+    .el-menu-item.is-active{
+      background-color: #4871C0 !important;
+      color: #f2f2f2 !important;
+      margin:8px 32px;
+      border-radius: 6px;
+    }
+  }
 
   .title {
     text-align: center;
     font-size: 20px;
-    color: #fff;
-    margin: 23px 16px;
+    color: #171a17;
+    margin: 8px 16px 16px;
   }
 }
 </style>

@@ -11,9 +11,10 @@
             <span class="text">欢迎使用</span>
             <img src="../../assets/login-right-line.png" alt="" />
           </div>
-          <div class="r-title">基于ocr识别的一站式综测与奖学金材料审核系统</div>
+          <div class="r-title">综测与奖学金材料审核系统</div>
           <el-tabs
             v-model="userType"
+            v-show="loginType!=='register'"
             class="demo-tabs"
             @tab-click="changeUserType"
           >
@@ -35,7 +36,16 @@
               ></el-input>
             </el-form-item>
             <div class="btn-wrap">
-              <el-button class="btn" @click="login">登录</el-button>
+              <el-button size="large" class="btn" @click="login">
+              {{ loginType==='register'?'注册':'登录' }}</el-button>
+              <div
+                class="text-box"
+                @click="goRegister"
+                v-show="userType === 'student'"
+              >
+                {{registerText
+                }}
+              </div>
             </div>
           </el-form>
         </div>
@@ -75,13 +85,27 @@ export default {
           trigger: 'blur',
         },
       },
+      loginType:this.$route.query.type ,
+      registerText:'还没有账号？去注册'
     }
   },
+  watch: {
+    $route(){
+        this.loginType = this.$route.query.type
+        this.getRegisterText()
+      },
+  },
   methods: {
-   changeUserType(tab) {
-    console.log('tab',tab.props.name);
-     this.userType = tab.props.name
-   },
+    getRegisterText() {
+      let text= this.loginType === 'register'
+                    ? '已经有账号，去登录'
+                    : '还没有账号？去注册'
+      this.registerText = text
+    },
+    changeUserType(tab) {
+      console.log('tab', tab.props.name)
+      this.userType = tab
+    },
     login() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
@@ -104,6 +128,14 @@ export default {
       })
       //跳转页面
       this.$router.push('/patientMessage')
+    },
+    goRegister() {
+      console.log('register1', this.$route.query.type, this.loginType);
+      if (this.loginType !== 'register') {
+        this.$router.push({ path: '/login', query: { type: 'register' } })
+      } else {
+        this.$router.push({ path: '/login' })
+      }
     },
   },
   mounted() {},
@@ -168,12 +200,18 @@ export default {
         }
         .btn-wrap {
           width: 100%;
-          margin-top: 9.1vh;
+          margin-top: 4.1vh;
           .btn {
             width: 100%;
             border-radius: 35px;
             color: #2e7afe;
             font-size: 20px;
+          }
+          .text-box {
+            color: #fff;
+            font-size: 16px;
+            margin-top: 12px;
+            cursor: pointer;
           }
         }
       }
@@ -201,12 +239,11 @@ export default {
     // margin-bottom: 8px;
   }
   .el-tabs__item {
-    
     font-size: 20px;
     color: #ddd;
     width: 50%;
   }
-  .el-tabs__item:hover{
+  .el-tabs__item:hover {
     color: #fff;
   }
   .el-tabs__item.is-active {
@@ -222,32 +259,31 @@ export default {
     border-color: #fff;
   }
   ::-webkit-input-placeholder {
-    color: #fff !important;
+    color: #888 !important;
     opacity: 0.7;
   }
   :-moz-placeholder {
     /* Firefox 18- */
-    color: #fff !important;
+    color: #888 !important;
     opacity: 0.7;
   }
   ::-moz-placeholder {
     /* Firefox 19+ */
-    color: #fff !important;
+    color: #888 !important;
     opacity: 0.7;
   }
   :-ms-input-placeholder {
-    color: #fff !important;
+    color: #888 !important;
     opacity: 0.7;
   }
   .el-textarea__inner,
   .el-input__inner {
     background: transparent !important;
-    color: #fff;
-    caret-color: #fff;
+    caret-color: #888;
   }
   input:-internal-autofill-previewed,
   input:-internal-autofill-selected {
-    -webkit-text-fill-color: #fff !important;
+    -webkit-text-fill-color: #888 !important;
     transition: background-color 5000s ease-in-out 0s !important;
   }
   .el-form-item__label {
