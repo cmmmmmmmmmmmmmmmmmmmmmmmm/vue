@@ -34,7 +34,7 @@ import { ADMIN_MENU, STUDENT_MENU } from './const'
 export default {
   data() {
     return {
-      currentPath: '/patientMessage',
+      currentPath: '/home',
       menuList:[]
     }
   },
@@ -55,8 +55,9 @@ export default {
   //方法表示一个具体的操作，主要书写业务逻辑；
   methods: {
     getCurrnetPath(v) {
-      if (v.startsWith('/patientMessageEditor')) {
-        this.currentPath = '/patientMessage'
+      console.log('v', v);
+      if (v.includes('Detail')) {
+        this.currentPath = v.split('D')?.[0]
       } else {
         this.currentPath = v
       }

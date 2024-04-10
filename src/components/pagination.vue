@@ -29,7 +29,7 @@ export default {
       data: {
         pageNumber: 1,
         pageSize: 10,
-        limitSelect: [10, 20, 50],
+        limitSelect: [5,10, 20, 50],
         total: 0,
       },
     }

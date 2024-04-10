@@ -11,33 +11,40 @@ export const ADMIN_MENU = [
         icon: 'EditPen',
         key: 1,
         path: '/rule'
-    },{
-        name:'成绩上传'
-        ,icon:'MessageBox'
-        ,key:2
-        ,path:'/upload'
-    },{
-        name:'综测材料审核',
-        icon:'Edit',
-        key:3,
-        path:'/review'
+    }, {
+        name: '成绩上传'
+        , icon: 'MessageBox'
+        , key: 2
+        , path: '/upload'
+    }, {
+        name: '综测材料审核',
+        icon: 'Edit',
+        key: 3,
+        path: '/review'
     },
     {
-        name:'奖学金评定',
-        icon:'PieChart',
-        key:4,
-        path:'/reward'
+        name: '奖学金评定',
+        icon: 'PieChart',
+        key: 4,
+        path: '/reward'
     },
     {
-        name:'申诉处理',
-        icon:'Message',
-        key:4,
-        path:'/dispose'
+        name: '申诉处理',
+        icon: 'Message',
+        key: 4,
+        path: '/dispose'
     }
 ]
 
 // 学生菜单
 export const STUDENT_MENU = [
+    {
+
+        name: '首页',
+        icon: 'House',
+        key: 0,
+        path: '/main'
+    },
     {
 
         name: '综测申报',
@@ -49,10 +56,10 @@ export const STUDENT_MENU = [
         icon: 'Connection',
         key: 2,
         path: '/scholar'
-    },{
-        name:'公示及申诉',
-        icon:'EditPen',
-        key:3,
-        path:'/appeal'
+    }, {
+        name: '公示及申诉',
+        icon: 'View',
+        key: 3,
+        path: '/appeal'
     }
 ]

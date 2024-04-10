@@ -2,15 +2,15 @@
   <div class="header">
     <el-header>
       <el-dropdown @command="handleCommand">
-       
         <span class="username">
           <span class="user-type">
-          {{
-            this.$store.state.userInfo.userType === 'student'
-              ? '学生'
-              : '管理员'
-          }} / &nbsp;
-        </span>
+            {{
+              this.$store.state.userInfo.userType === 'student'
+                ? '学生'
+                : '管理员'
+            }}
+            / &nbsp;
+          </span>
           {{ this.$store.state.userInfo.username }}
           <i
             class="el-icon-caret-bottom usericon"
@@ -46,6 +46,8 @@ export default {
         this.$message.success('退出成功')
         this.$router.push('/')
         localStorage.removeItem('COBRAIN_ADMIN_TK')
+        localStorage.removeItem('userInfo')
+        localStorage.removeItem('scholar')
       }
     },
   },
@@ -61,6 +63,11 @@ export default {
   line-height: 60px;
   background: white;
   z-index: 99;
+  :deep {
+    .el-dropdown:focus-visible {
+      outline: none !important;
+    }
+  }
   .user-type {
     color: #555;
     font-size: 14px;
@@ -72,5 +79,8 @@ export default {
     display: flex;
     align-items: center;
   }
+  * :focus-visible {
+      outline: none !important;
+    }
 }
 </style>

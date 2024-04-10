@@ -1,8 +1,22 @@
 import Sys from '../views/student/sys.vue'
 import Scholar from '../views/student/scholar.vue'
 import Appeal from '../views/student/appeal.vue'
+import Main from '../views/student/main.vue'
+import AppealDetail from '../views/student/appealDetail.vue'
 
 export default [
+    {
+        path: '/main',
+        name: 'Main',
+        component: Main,
+        meta: {
+            name: '首页',
+            parentPath: [
+                { parentUrl: '', parentName: '首页' },
+            ],
+            index: 0
+        }
+    },
     {
         path: '/sys',
         name: 'Sys',
@@ -10,7 +24,7 @@ export default [
         meta: {
             name: '综测申报',
             parentPath: [
-                { parentUrl: '', parentName: '综测申报' },
+                { parentUrl: '/main', parentName: '首页' },
             ],
             index: 0
         }
@@ -23,7 +37,21 @@ export default [
         meta: {
             name: '奖学金申报',
             parentPath: [
-                { parentUrl: '', parentName: '奖学金申报' },
+                { parentUrl: '/main', parentName: '首页' },
+
+            ],
+            index: 0
+        }
+    },
+    {
+        path: '/appealDetail',
+        name: 'AppealDetail',
+        component: AppealDetail,
+        meta: {
+            name: '奖学金公示详情',
+            parentPath: [
+                { parentUrl: '/main', parentName: '首页' },
+                { parentUrl: '/appeal', parentName: '公示及申诉' },
             ],
             index: 0
         }
@@ -35,7 +63,7 @@ export default [
         meta: {
             name: '公示及申诉',
             parentPath: [
-                { parentUrl: '', parentName: '公示及申诉' },
+                { parentUrl: '/main', parentName: '首页' },
             ],
             index: 0
         }

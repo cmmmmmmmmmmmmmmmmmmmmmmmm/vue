@@ -1,9 +1,22 @@
 <template>
   <div id="nav" v-loading="loading">
     <el-container style="height: 100%" v-if="isShowSideBar">
-      <Siderbar style="position:sticky;top:0%"></Siderbar>
+      <Siderbar
+        style="
+          position: sticky;
+          top: 0%;
+          box-shadow: var(--el-box-shadow-light);
+          z-index: inherit;
+        "
+      ></Siderbar>
       <el-container direction="vertical">
-        <Header style="position:sticky;top:0%"></Header>
+        <Header
+          style="
+            position: sticky;
+            top: 0%;
+            box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+          "
+        ></Header>
         <el-main>
           <Breadcrumb></Breadcrumb>
           <div class="main-wrap">
@@ -22,12 +35,6 @@
     </el-container>
   </div>
 </template>
-
- 
-
-
-
-
 
 <script>
 import Header from './components/header.vue'
@@ -85,6 +92,7 @@ export default {
 <style scoped lang="scss">
 #nav {
   height: 100%;
+  min-width: 800px;
   .el-main {
     background: #f7f7fd;
     width: 100%;
@@ -123,4 +131,3 @@ export default {
   transform: translate3d(-100%, 0, 0);
 }
 </style>
-

@@ -5,6 +5,7 @@ import Dispose from '../views/admin/dispose.vue'
 import Reward from '../views/admin/reward.vue'
 import Review from '../views/admin/review/review.vue'
 import ReviewDetail from '../views/admin/review/reviewDetail.vue'
+import DisposeDetail from '../views/admin/disposeDetail.vue'
 
 export default [
     {
@@ -89,6 +90,19 @@ export default [
             name: '申诉处理',
             parentPath: [
                 { parentUrl: '/home', parentName: '首页' },
+            ],
+            index: 0
+        }
+    },
+    {
+        path: '/disposeDetail',
+        name: 'DisposeDetail',
+        component: DisposeDetail,
+        meta: {
+            name: '申诉处理详情',
+            parentPath: [
+                { parentUrl: '/home', parentName: '首页' },
+                { parentUrl: '/dispose', parentName: '申诉处理' },
             ],
             index: 0
         }

@@ -79,15 +79,19 @@
     width="500"
     draggable
     overflow
+    class="reward-dialog"
   >
     <el-form
       :inline="true"
       :model="formData"
       class="demo-form-inline"
       style="padding-left: 32px"
+      :rules="rules"
+      ref="ruleForm"
     >
-      <el-form-item label="奖学金类型">
+      <el-form-item label="奖学金类型" prop="reward">
         <el-select
+          style="width: 200px"
           v-model="formData.reward"
           placeholder="请选择奖学金类型"
           clearable
@@ -102,8 +106,9 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="奖学金金额">
+      <el-form-item label="奖学金金额" prop="sum">
         <el-input
+          style="width: 200px"
           v-model="formData.sum"
           placeholder="请输入奖学金金额"
           clearable
@@ -115,7 +120,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button type="primary" @click="onsubmitReward"> 确定 </el-button>
-        <el-button @click="dialogOverflowVisible = false">取消</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
       </div>
     </template>
   </el-dialog>
@@ -143,7 +148,8 @@ export default {
       scholarOption: [
         { label: '国家奖学金', value: 'country', sum: 8000 },
         { label: '省级奖学金', value: 'province', sum: 5000 },
-        { label: '校级奖学金', value: 'school', sum: 2000 },
+        { label: '校级一等奖学金', value: 'school1', sum: 2000 },
+        { label: '校级二等奖学金', value: 'school2', sum: 1000 },
       ],
       pagiParams: {
         pageNumber: 1,
@@ -151,6 +157,14 @@ export default {
         total: 0,
       },
       list: [],
+      rules: {
+        reward: [
+          { required: true, message: '请选择奖学金类型', trigger: 'change' },
+        ],
+        sum: [
+          { required: true, message: '请输入奖学金金额', trigger: 'change' },
+        ],
+      },
     }
   },
   //静态
@@ -167,15 +181,22 @@ export default {
       this.formData = { reward, sum, id }
     },
     onsubmitReward() {
-      this.dialogVisible = false
-      this.list.forEach((item) => {
-        if (item.id == this.formData.id) {
-          item.reward = this.formData.reward
-          item.sum = this.formData.sum
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.dialogVisible = false
+          this.list.forEach((item) => {
+            if (item.id == this.formData.id) {
+              item.reward = this.formData.reward
+              item.sum = this.formData.sum
+            }
+          })
+          this.$nextTick(() => {
+            this.$refs.ruleForm.resetFields();
+          })
+
+          this.$message.success('奖学金评定成功')
         }
       })
-      this.formData = {}
-      this.$message.success('奖学金评定成功')
     },
     onTypeChange(item) {
       this.formData.reward = item
@@ -236,6 +257,12 @@ export default {
 
 <style lang="scss">
 .reward {
+  .el-input__wrapper,
+  .el-select__wrapper {
+    width: 200px;
+  }
+}
+.sys-dialog {
   .el-input__wrapper,
   .el-select__wrapper {
     width: 200px;

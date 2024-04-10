@@ -127,7 +127,7 @@ export default {
         userType: this.userType,
       })
       //跳转页面
-      let homeUrl=this.userType === 'student'? '/sys':'/home'
+      let homeUrl=this.userType === 'student'? '/main':'/home'
       this.$router.push(homeUrl)
     },
     goRegister() {

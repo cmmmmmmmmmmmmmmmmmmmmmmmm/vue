@@ -1,181 +1,239 @@
 <template>
-    <div class="organMgt">
-      <el-card style="margin-bottom: 15px">
-        <el-form :inline="true">
-          <el-form-item label="关键字">
-            <el-input
-              placeholder="请输入客户名称进行搜索"
-              style="width: 240px"
-              v-model="searchForm.name"
-            ></el-input>
-          </el-form-item>
-  
-          <el-form-item label="客户类型">
-            <el-select v-model="searchForm.type">
-              <el-option
-                v-for="(item, index) in auditStatusOption"
-                :key="index"
-                :label="item.label"
-                :value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-  
-          <el-form-item class="fr">
-            <el-button type="primary" @click="search">搜索</el-button>
-            <el-button @click="reset">重置</el-button>
-            <el-button type="warning" @click="goEdit">添加客户</el-button>
-          </el-form-item>
-        </el-form>
-      </el-card>
-      <el-card>
-        <el-table border :data="list">
-          <el-table-column label="创建时间" prop="creatTime"></el-table-column>
-          <el-table-column label="客户ID" prop="id"></el-table-column>
-          <el-table-column label="客户名称" prop="name"></el-table-column>
-          <el-table-column label="客户类型">
-            <template #default="scope">
-              {{ scope.row.type == 1 ? '组织机构' : '个人' }}
-            </template>
-          </el-table-column>
-          <el-table-column label="联系人">
-            <template #default="scope">
-              {{
-                scope.row.organContactsResps[0]
-                  ? scope.row.organContactsResps[0].contactsName
-                  : 'empty'
-              }}
-            </template>
-          </el-table-column>
-          <el-table-column label="手机号">
-            <template #default="scope">
-              {{
-                scope.row.organContactsResps[0]
-                  ? scope.row.organContactsResps[0].contactsPhone
-                  : 'empty'
-              }}
-            </template>
-          </el-table-column>
-          <el-table-column label="我司负责人">
-            <template #default="scope">
-              {{
-                scope.row.organOperatorResps[0]
-                  ? scope.row.organOperatorResps[0].operatorName
-                  : 'empty'
-              }}
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template #default="scope">
-              <el-button type="text" @click="goDetail(scope.row)">详情</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <Pagination
-          :pagiParams="pagiParams"
-          @change="getList"
-          style="text-align: right; margin-top: 10px"
-        ></Pagination>
-      </el-card>
+  <DefinScrollbar height="100%" :showUpBt="true">
+    <div class="page-container main-view">
+      <div class="container">
+        <div class="echart-container">
+          <div class="top-container">
+            <div class="left">
+              <EchartContainer ref="EchartContainerRef"></EchartContainer>
+            </div>
+            <div class="right">
+              <EchartContainer ref="EchartContainerRef_1"></EchartContainer>
+            </div>
+          </div>
+        </div>
+
+        <el-divider border-style="dashed" />
+        <div class="text-container">
+          <div class="title">大学生综合测评系统审核端使用须知：</div>
+          &emsp;&emsp;
+          在您参与大学生综合测评系统审核工作之前，请务必认真阅读以下填写须知：
+          请确保对提交的信息进行全面、客观、公正的审核，不偏袒任何一方，不受个人偏见或利益影响。
+          请严格按照规定的审核标准进行操作，确保审核过程合乎法规和相关政策要求。
+          拒绝任何形式的舞弊行为，包括但不限于虚假审核、泄露审核信息等，一经发现将严肃处理。
+          对于审核中存在疑问或不清楚的情况，请及时向上级主管或相关部门咨询，不得擅自做出决定。
+          审核工作涉及学生个人隐私和信息保护，请严格遵守相关法律法规，确保信息安全。
+          感谢您的配合和努力，您的审核工作将对大学生综合测评系统的公正性和有效性起到重要作用。如有疑问，请及时联系。
+        </div>
+      </div>
     </div>
-  </template>
-  
-  <script>
-  import Pagination from '@/components/pagination'
-  import axios from 'axios'
-  
-  export default {
-    //部件
-    components: { Pagination },
-    data() {
-      return {
-        searchForm: {
-          type: 0,
-          name: '',
+  </DefinScrollbar>
+</template>
+
+<script>
+/**
+ * 页面例子
+ */
+import {
+  defineComponent,
+  onBeforeUnmount,
+  ref,
+  reactive,
+  getCurrentInstance,
+  onActivated,
+  onMounted,
+} from 'vue'
+import { useRouter } from 'vue-router'
+import EchartContainer from '@/components/EchartContainer.vue'
+import DefinScrollbar from '@/components/DefinScrollbar.vue'
+import * as echarts from 'echarts'
+
+export default defineComponent({
+  components: {
+    EchartContainer,
+    DefinScrollbar,
+  },
+  setup() {
+    const router = useRouter()
+    const EchartContainerRef = ref() //组件实例
+    const EchartContainerRef_1 = ref() //组件实例
+    const dataContainer = reactive({
+      loading: false,
+    })
+    onMounted(() => {
+      /** 初始化图表 */
+      EchartContainerRef.value.initData({
+        backgroundColor: '',
+        title: {
+          text: '综测数据概览',
+          x: 'left',
+          textStyle: { fontSize: '16', color: '#171a17' },
         },
-        auditStatusOption: [
-          { label: '全部', value: 0 },
-          { label: '组织机构', value: 1 },
-          { label: '个人', value: 2 },
-        ],
-        pagiParams: {
-          pageNumber: 1,
-          pageSize: 10,
-          total: 0,
-        },
-        list: [],
-      }
-    },
-    //静态
-    props: {},
-    //对象内部的属性监听，也叫深度监听
-    watch: {},
-    //属性的结果会被缓存，除非依赖的响应式属性变化才会重新计算。主要当作属性来使用；
-    computed: {},
-    //方法表示一个具体的操作，主要书写业务逻辑；
-    methods: {
-      // goPatientEditor() {
-      //   this.$router.push('/patientMessageEditor')
-      // },
-      search() {
-        // this.pagiParams.pageNumber = 1
-        // this.getList()
-        this.$message.warning('此功能暂未开发')
-      },
-      getListBySizePage(pageNumber, pageSize) {
-        this.pagiParams.pageNumber = pageNumber
-        this.pagiParams.pageSize = pageSize
-        this.getList()
-      },
-      getList() {
-        let data = JSON.parse(JSON.stringify(this.searchForm))
-        if (this.searchForm.type == 0) {
-          delete data.type
-        }
-  
-        data.pageNumber = this.pagiParams.pageNumber
-        data.pageSize = this.pagiParams.pageSize
-        // api.getOrganList(data).then((res) => {
-        //   if (!res.code) {
-        //     this.list = res.data.list;
-        //     this.pagiParams.total = res.data.totalCount;
-        //   }
-        // });
-  
-        //这里暂时用axios模仿联网请求，到时候把import取消掉
-        axios.get('/js/data.json').then(
-          (res) => {
-            this.list = res.data.data.list
-            this.pagiParams.total = res.data.data.totalCount
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['学生人数（人）'], right: 0 },
+        grid: { top: 90, right: 80, bottom: 30, left: 80 },
+        xAxis: [
+          {
+            type: 'category',
+            data: [
+              '0-30(分)',
+              '30-59(分)',
+              '60-89(分)',
+              '90-99(分)',
+              '100-119(分)',
+              '120-149(分)',
+              '150-179(分)',
+            ],
+            boundaryGap: true,
+            axisTick: { show: false },
           },
-          (res) => {
-            console.log('error')
-          }
-        )
-      },
-      goDetail({ id }) {
-        this.$router.push('/patientMessageEditor')
-        // this.$router.push(`/organMgt/${id}`)
-      },
-      reset() {
-        this.searchForm = JSON.parse(this._searchForm)
-      },
-      goEdit() {
-        this.$message.warning('此功能暂未开发')
-      },
-    },
-    //请求数据
-    created() {},
-    mounted() {
-      this._searchForm = JSON.stringify(this.searchForm)
-      this.getList()
-    },
-  }
-  </script>
-  
-  <style scoped>
-  .organMgt {
+        ],
+        yAxis: [
+          {
+            // name: '学生人数（人）',
+            nameLocation: 'middle',
+            nameTextStyle: { padding: [50, 4, 5, 6] },
+            splitLine: { show: false },
+            axisLine: { show: false },
+            axisTick: { show: false },
+            axisLabel: { color: '#000', formatter: '{value} ' },
+          },
+        ],
+        series: [
+          {
+            name: '学生人数（人）',
+            type: 'bar',
+            barWidth: 30,
+            itemStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(108,80,243,0.3)' },
+                { offset: 1, color: 'rgba(108,80,243,0)' },
+              ]),
+              //柱状图圆角
+              borderRadius: [30, 30, 0, 0],
+            },
+            data: [
+              { value: 2, stationName: 's1' },
+              { value: 11, stationName: 's1' },
+              { value: 34, stationName: 's2' },
+              { value: 54, stationName: 's3' },
+              { value: 63, stationName: 's4' },
+              { value: 3, stationName: 's5' },
+              { value: 1, stationName: 's6' },
+            ],
+          },
+        ],
+      })
+      EchartContainerRef_1.value.initData({
+        title: {
+          text: '奖学金数据概览',
+          x: 'left',
+          textStyle: { fontSize: '16', color: '#171a17' },
+        },
+        tooltip: {
+          trigger: 'item',
+        },
+        legend: {
+          top: '5%',
+          left: 'center',
+        },
+        series: [
+          {
+            name: '获奖人数',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2,
+            },
+            label: {
+              show: false,
+              position: 'center',
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: 18,
+                fontWeight: 'bolder',
+              },
+            },
+            labelLine: {
+              show: false,
+            },
+            data: [
+              { value: 1, name: '国家级奖学金' },
+              { value: 2, name: '省级奖学金' },
+              { value: 4, name: '校级一等奖学金' },
+              { value: 6, name: '校级二等奖学金' },
+            ],
+          },
+        ],
+      })
+    })
+    return {
+      dataContainer,
+      EchartContainerRef,
+      EchartContainerRef_1,
+    }
+  },
+})
+</script>
+
+<style lang="scss" scoped>
+.main-view {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  .container {
+    background-color: white;
     width: 100%;
+    border-radius: 5px;
+    padding: 15px;
+    box-sizing: border-box;
+    > * {
+      margin: 0 0 30px 0;
+      &:last-child {
+        margin: 0;
+      }
+    }
+    > .echart-container {
+      width: 100%;
+      > .top-container {
+        display: flex;
+        flex-direction: row;
+        height: 450px;
+        > .left,
+        > .right {
+          width: 0;
+          flex: 1 1 0;
+        }
+        > .left {
+          flex: 2 1 0;
+          margin-right: 60px;
+        }
+      }
+      > .bottom-container {
+        width: 100%;
+        height: 400px;
+        margin-top: 30px;
+      }
+    }
+    .text-container {
+      font-size: 16px;
+      color: #171a17;
+      line-height: 28px;
+
+      padding: 8px;
+      .title {
+        font-size: 18px;
+        font-weight: bolder;
+        margin-bottom: 12px;
+      }
+      width: 100%;
+      margin-top: 30px;
+    }
   }
-  </style>
-  
+}
+</style>
