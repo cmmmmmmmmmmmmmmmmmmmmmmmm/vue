@@ -42,7 +42,14 @@
       </div>
       <div class="base-info-item"><span> 奖学金等级：</span>{{ scholarObj[detail.reward] }}</div>
       <div class="base-info-item"><span> 奖学金金额：</span>{{ detail.sum }}</div>
+      <div class="mini-title">
+        <div></div>
+        申诉信息
+      </div>
+      <div class="base-info-item"><span> 申诉时间：</span>{{ detail.creatTime }}</div>
+      <div class="base-info-item"><span> 申诉原因：</span>{{ detail.reason }}</div>
     </div>
+    
 
     <div class="base-info">
       <div class="mini-title">
