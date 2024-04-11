@@ -3,6 +3,7 @@ import Scholar from '../views/student/scholar.vue'
 import Appeal from '../views/student/appeal.vue'
 import Main from '../views/student/main.vue'
 import AppealDetail from '../views/student/appealDetail.vue'
+import Message from '../views/student/message.vue'
 
 export default [
     {
@@ -62,6 +63,17 @@ export default [
         component: Appeal,
         meta: {
             name: '公示及申诉',
+            parentPath: [
+                { parentUrl: '/main', parentName: '首页' },
+            ],
+            index: 0
+        }
+    },{
+        path: '/message',
+        name: 'Message',
+        component: Message,
+        meta: {
+            name: '消息通知',
             parentPath: [
                 { parentUrl: '/main', parentName: '首页' },
             ],

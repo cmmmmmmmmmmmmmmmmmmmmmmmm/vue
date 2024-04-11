@@ -61,5 +61,10 @@ export const STUDENT_MENU = [
         icon: 'View',
         key: 3,
         path: '/appeal'
+    },{
+        name: '消息',
+        icon: 'Message',
+        key: 4,
+        path: '/message'
     }
 ]

@@ -28,6 +28,9 @@
         "nengliScore": 36,
         "reason": "证书过期",
         "reward": "country",
+        "message": "您有一条申诉被驳回",
+        "messageStatus": "驳回",
+        "messageReason": "证书仍在有效期内",
         "sum":8000
         
       },
@@ -46,7 +49,8 @@
         "zi-zhu-xue-xi": 8,
         "shi-jian-chuang-xin": 4,
         "reason": "考试作弊",
-
+        "message": "您有一条申诉被通过",
+        "messageStatus": "通过",
         "zu-zhi-jiao-liu": 6,
         "chuang-xin-chuang-ye": 6,
         "wen-ti-te-chang": 12,
@@ -63,6 +67,9 @@
         "id": 1180199145,
         "class": "计科二班",
         "reason": "考试作弊",
+        "message": "您有一条申诉被驳回",
+        "messageStatus": "驳回",
+        "messageReason": "未发现违纪情况",
         "reward": "school2",
         "sum":1000,
         "creatTime": "2023-06-24 14:00:35",
@@ -92,6 +99,9 @@
         "creatTime": "2023-06-24 13:42:20",
         "class": "计科二班",
         "reason": "考试作弊",
+        "message": "您有一条申诉被驳回",
+        "messageStatus": "驳回",
+        "messageReason": "未发现违纪情况",
         "reward": "school1",
         "sum":2000,
         "name": "邹奇",
@@ -118,6 +128,8 @@
       {
         "id": 1180199532,
         "reason": "分数有误",
+        "message": "您有一条申诉被通过",
+        "messageStatus": "通过",
         "reward": "school2",
         "sum":1000,
         "creatTime": "2023-06-24 13:36:27",
@@ -146,6 +158,9 @@
       {
         "id": 1180199532,
         "reason": "分数有误",
+        "message": "您有一条申诉被驳回",
+        "messageStatus": "驳回",
+        "messageReason": "分数统计准确",
         "reward": "school2",
         "sum":1000,
         "creatTime": "2023-06-24 11:59:32",
