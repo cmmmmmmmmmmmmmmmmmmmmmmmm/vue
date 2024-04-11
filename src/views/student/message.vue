@@ -10,7 +10,9 @@
           <span>{{ item.message }}</span>
         </div>
       </template>
-      <div class="base-info-item"><span> 申诉对象：</span>{{ item.name }}</div>
+      <div class="base-info-item">
+        <span> 申诉对象：</span><a @click="onDispose(item)" style="cursor: pointer;color:#4871C0">{{ item.name }}</a>
+      </div>
       <div class="base-info-item">
         <span> 申诉时间：</span>{{ item.creatTime }}
       </div>
